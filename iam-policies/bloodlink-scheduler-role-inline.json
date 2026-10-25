@@ -1,0 +1,1 @@
+{"Version":"2012-10-17","Statement":[{"Sid":"InvokeDigest","Effect":"Allow","Action":"lambda:InvokeFunction","Resource":["arn:aws:lambda:ap-south-1:814209304477:function:bloodlink-daily-digest","arn:aws:lambda:ap-south-1:814209304477:function:bloodlink-daily-digest:*"]}]}

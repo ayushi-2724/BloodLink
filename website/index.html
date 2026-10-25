@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloodLink – Emergency Blood Donor Alerts</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="drop">&#x1FA78;</span> BloodLink</div>
+    <div class="user" id="userBox" hidden>
+      <span id="userEmail"></span>
+      <button class="btn btn-ghost" id="logoutBtn" type="button">Logout</button>
+    </div>
+  </header>
+
+  <div id="msg" class="msg" role="status" aria-live="polite" hidden></div>
+
+  <!-- Logged-out view -->
+  <main id="authView" class="container">
+    <section class="hero">
+      <h1>Find blood donors in minutes, not hours.</h1>
+      <p>Post an urgent blood request and every registered donor gets an instant email with the hospital and your phone number, so they can call you directly.</p>
+      <ul class="hero-points">
+        <li>Instant email alerts to all donors</li>
+        <li>Mark requests fulfilled when the need is met</li>
+        <li>Daily 9 AM digest of open requests</li>
+      </ul>
+    </section>
+
+    <section class="card auth-card">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="login" type="button">Login</button>
+        <button class="tab" data-tab="signup" type="button">Sign up</button>
+        <button class="tab" data-tab="verify" type="button">Verify code</button>
+      </div>
+
+      <form id="loginForm" class="tab-panel" data-panel="login">
+        <label>Email<input type="email" id="loginEmail" required autocomplete="username"></label>
+        <label>Password<input type="password" id="loginPassword" required autocomplete="current-password"></label>
+        <button class="btn btn-primary" type="submit">Log in</button>
+      </form>
+
+      <form id="signupForm" class="tab-panel" data-panel="signup" hidden>
+        <label>Email<input type="email" id="signupEmail" required autocomplete="username"></label>
+        <label>Password<input type="password" id="signupPassword" required minlength="8" autocomplete="new-password"></label>
+        <p class="hint">At least 8 characters, with upper &amp; lower case letters, a number and a symbol.</p>
+        <button class="btn btn-primary" type="submit">Create account</button>
+      </form>
+
+      <form id="verifyForm" class="tab-panel" data-panel="verify" hidden>
+        <label>Email<input type="email" id="verifyEmail" required></label>
+        <label>Verification code<input type="text" id="verifyCode" required inputmode="numeric" maxlength="6"></label>
+        <button class="btn btn-primary" type="submit">Verify email</button>
+        <button class="btn btn-link" id="resendBtn" type="button">Resend code</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Logged-in view -->
+  <main id="appView" class="container app" hidden>
+    <section class="card">
+      <div class="card-head">
+        <h2>Post Emergency Request</h2>
+        <div class="donor-box">
+          <span id="donorStatus" class="donor-status">Checking donor status…</span>
+          <button class="btn btn-outline" id="donorBtn" type="button" hidden>&#10084; Become a Donor</button>
+          <button class="btn btn-ghost" id="optoutBtn" type="button" hidden>Opt out</button>
+        </div>
+      </div>
+      <form id="requestForm" class="grid">
+        <label>Patient name<input id="patientName" required maxlength="100"></label>
+        <label>Blood group
+          <select id="bloodGroup" required>
+            <option value="">Select</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+          </select>
+        </label>
+        <label>Hospital<input id="hospital" required maxlength="150"></label>
+        <label>City<input id="city" required maxlength="80"></label>
+        <label>Units needed<input id="unitsNeeded" type="number" min="1" max="10" value="1" required></label>
+        <label>Contact phone<input id="contactPhone" required pattern="[0-9]{10}" maxlength="10" inputmode="numeric" placeholder="10 digits"></label>
+        <label>Required by<input id="requiredBy" type="date" required></label>
+        <label class="full">Notes (optional)<textarea id="notes" maxlength="500" rows="2"></textarea></label>
+        <div class="full"><button class="btn btn-primary" type="submit" id="postBtn">Post request &amp; alert donors</button></div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Blood Requests</h2>
+        <div class="filters">
+          <select id="statusFilter" aria-label="Status filter">
+            <option value="Open">Open</option>
+            <option value="Fulfilled">Fulfilled</option>
+            <option value="All">All</option>
+          </select>
+          <select id="groupFilter" aria-label="Blood group filter">
+            <option value="All">All groups</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+          </select>
+          <button class="btn btn-ghost" id="refreshBtn" type="button">&#8635; Refresh</button>
+        </div>
+      </div>
+      <div id="requestList" class="list"></div>
+    </section>
+  </main>
+
+  <footer class="footer">BloodLink · Built 100% on AWS (S3, Cognito, API Gateway, Lambda, DynamoDB, SNS)</footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
